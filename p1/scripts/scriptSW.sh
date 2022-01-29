@@ -8,6 +8,7 @@ cat /home/vagrant/.ssh/key.pub  >> /home/vagrant/.ssh/authorized_keys
 sudo mkdir /root/.ssh
 cat  /home/vagrant/.ssh/key.pub >> /root/.ssh/authorized_keys
 
+scp root@192.168.42.110:/var/lib/rancher/k3s/server/node-token token
 
 #curl -sfL https://get.k3s.io | sh -
 
