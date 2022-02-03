@@ -14,4 +14,4 @@ data:
     </html>
 kind: ConfigMap
 metadata:
-  name: configmap-app-one
+  name: cm-app-one
