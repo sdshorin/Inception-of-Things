@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: app-one
   labels:
-    app: openresty
+    app: app-one
 spec:
   replicas: 1
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: openresty
+      app: app-one
   template:
     metadata:
       labels:
-        app: openresty
+        app: app-one
     spec:
       containers:
         - name: app-one
