@@ -1,0 +1,18 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.define "cjosueS" do |vm1|
+    vm1.vm.box = "centos/8"
+    vm1.vm.hostname = 'cjosueS'
+    vm1.vm.box_url = "centos/8"
+    vm1.vm.network "private_network", ip: "192.168.42.110"
+    vm1.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--name", "cjosueS"]
+      v.memory = 1048
+      v.cpus = 2
+    end
+    vm1.vm.provision "file", source: "~/.ssh/inception.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
+    vm1.vm.provision "file", source: "~/.ssh/inception", destination: "/home/vagrant/.ssh/id_rsa"
+    vm1.vm.provision "file", source: "confs", destination: "/home/vagrant/confs"
+    vm1.vm.provision "shell", run: "always", path: "scripts/scriptS.sh"
+    end
+end
