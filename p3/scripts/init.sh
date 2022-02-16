@@ -4,17 +4,12 @@ sudo cat /home/vagrant/.ssh/id_rsa.pub  >> /home/vagrant/.ssh/authorized_keys
 sudo mkdir /root/.ssh
 sudo cp -R  /home/vagrant/.ssh/*  /root/.ssh
 
-echo "Настройка пакетного менеджера"
-sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*
-sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
-
 echo "скачиваем и запускаем докер"
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh ./get-docker.sh
 sudo usermod -aG docker $USER
 sudo service docker start
 sudo chmod 666 /var/run/docker.sock
-
 
 echo "Устанавливаем kubectl"
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -31,4 +26,3 @@ echo "Устанавливаем AgroCD"
 
 echo "Password ArgoCD"
 /usr/local/bin/kubectl get pods -n argocd | grep argocd-server
-

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# ssh-keygen -t rsa
-# iception
-
 echo "Hi here!!"
 cat /home/vagrant/.ssh/id_rsa.pub  >> /home/vagrant/.ssh/authorized_keys
 sudo mkdir /root/.ssh
