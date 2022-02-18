@@ -19,10 +19,15 @@ echo "Устанавливаем k3d"
 curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 k3d cluster create mycluster
 
-echo "Устанавливаем AgroCD"
+#echo "Устанавливаем AgroCD в класстер k3d"
 /usr/local/bin/kubectl create namespace argocd
 /usr/local/bin/kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-/usr/local/bin/kubectl port-forward svc/argocd-server -n argocd 8080:443
+/usr/local/bin/kubectl -n argocd patch svc/argocd-server -p '{"spec": {"type": "LoadBalancer"}}'
+/usr/local/bin/kubectl wait --for=condition=available deployment --all -n argocd --timeout=3m
+/usr/local/bin/kubectl wait --for=condition=ready pod --all -n argocd --timeout=3m
+#echo "Парроль ArgoCD"
+/usr/local/bin/kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath={.data.password} | base64 --decode
 
-echo "Password ArgoCD"
-/usr/local/bin/kubectl get pods -n argocd | grep argocd-server
+#После запуска ВМ можно подключится и пробрасить порты
+#kubectl port-forward svc/argocd-server -n argocd 8888:80  --address=0.0.0.0
+#kubectl port-forward svc/argocd-server -n argocd 8443:443 --address=0.0.0.0
