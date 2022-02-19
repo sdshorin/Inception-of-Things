@@ -28,6 +28,7 @@ k3d cluster create mycluster
 #echo "Парроль ArgoCD"
 /usr/local/bin/kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath={.data.password} | base64 --decode
 
+/usr/local/bin/kubectl apply -f /home/vagrant/confs/argocd.yaml
 #После запуска ВМ можно подключится и пробрасить порты
 #kubectl port-forward svc/argocd-server -n argocd 8888:80  --address=0.0.0.0
 #kubectl port-forward svc/argocd-server -n argocd 8443:443 --address=0.0.0.0
