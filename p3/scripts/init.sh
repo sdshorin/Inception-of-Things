@@ -17,18 +17,24 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 echo "Устанавливаем k3d"
 curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
-k3d cluster create mycluster
+k3d cluster create mycluster --port 8888:8888@loadbalancer 
 
 #echo "Устанавливаем AgroCD в класстер k3d"
 /usr/local/bin/kubectl create namespace argocd
+/usr/local/bin/kubectl create namespace dev
 /usr/local/bin/kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 /usr/local/bin/kubectl -n argocd patch svc/argocd-server -p '{"spec": {"type": "LoadBalancer"}}'
+/usr/local/bin/kubectl apply -n argocd -f /home/vagrant/confs/argocd.yaml
 /usr/local/bin/kubectl wait --for=condition=available deployment --all -n argocd --timeout=3m
 /usr/local/bin/kubectl wait --for=condition=ready pod --all -n argocd --timeout=3m
 #echo "Парроль ArgoCD"
-/usr/local/bin/kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath={.data.password} | base64 --decode
+echo `/usr/local/bin/kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath={.data.password} | base64 --decode`
 
-/usr/local/bin/kubectl apply -f /home/vagrant/confs/argocd.yaml
 #После запуска ВМ можно подключится и пробрасить порты
-#kubectl port-forward svc/argocd-server -n argocd 8888:80  --address=0.0.0.0
-#kubectl port-forward svc/argocd-server -n argocd 8443:443 --address=0.0.0.0
+kubectl port-forward svc/argocd-server -n argocd 8443:443 --address=0.0.0.0&
+
+# После запуска:
+# 1. повторно пробросить порт для argocd: kubectl port-forward svc/argocd-server -n argocd 8443:443 --address=0.0.0.0&
+# 2. дождаться, когда приложение развернется
+# 3. Проверить приложение: curl http://localhost:8888
+

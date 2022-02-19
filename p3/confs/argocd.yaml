@@ -1,16 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: will42
+  name: argocd-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/GoncharovAndrey/iot_42 # change here with your repository url
-    targetRevision: dev
+    # repoURL: https://github.com/hisnameisivan/draudrau # change here with your repository url
+    targetRevision: HEAD
     path: deploy
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
