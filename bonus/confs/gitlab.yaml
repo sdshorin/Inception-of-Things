@@ -1,0 +1,20 @@
+apiVersion: apps.gitlab.com/v1beta1
+kind: GitLab
+metadata:
+  name: gitlab
+spec:
+  chart:
+    # Provided <Operator Version> is the released version from
+    #  https://gitlab.com/gitlab-org/cloud-native/gitlab-operator/-/releases
+    # obtain list of available chart versions from:
+    #  https://gitlab.com/gitlab-org/cloud-native/gitlab-operator/-/blob/<Operator Version>/CHART_VERSIONS
+    version: "5.7.1"
+    values:
+      global:
+        hosts:
+          domain: 21.ru # Provide a real base domain for GitLab. "gitlab." and "registry." will be exposed as subdomains.
+          externalIP: "172.18.0.4" # If using a static wildcard DNS record for the base domain, enter the IP address it resolves to here.
+        ingress:
+          configureCertmanager: true
+      certmanager-issuer:
+        email: mail@21.ru # use your real email address here
