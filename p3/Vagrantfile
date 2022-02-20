@@ -14,6 +14,7 @@ Vagrant.configure("2") do |config|
     vm1.vm.provision "file", source: "~/.ssh/inception.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
     vm1.vm.provision "file", source: "~/.ssh/inception", destination: "/home/vagrant/.ssh/id_rsa"
     vm1.vm.provision "file", source: "confs", destination: "/home/vagrant/confs"
+    vm1.vm.provision "file", source: "../bonus/gitlab.sh", destination: "/home/vagrant/gitlab.sh"
     vm1.vm.provision "shell", path: "scripts/init.sh", privileged: false
     end
 end
